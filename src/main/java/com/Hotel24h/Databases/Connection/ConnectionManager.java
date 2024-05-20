@@ -1,6 +1,6 @@
 package com.Hotel24h.Databases.Connection;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -71,23 +71,33 @@ public class ConnectionManager {
         public final void configProperties(){
 
 
-            try {
-
-                Properties properties = new Properties();
-                FileReader lerArquivo = new FileReader("config.properties");
-                properties.load(lerArquivo);
-
-                    urlHotel = properties.getProperty("db.url");
-                    userNameHotel = properties.getProperty("db.username");
-                    passWordHotel = properties.getProperty("db.password");
-
-
-            }catch (IOException e){
-                System.out.println("Erro ao ler o arquivo de propriedades: " + e.getMessage());
-
-            }
+              try {
+        Properties properties = new Properties();
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config.properties");
+        
+        if (inputStream == null) {
+            System.out.println("Erro ao ler o arquivo de propriedades: config.properties não encontrado");
+            return;
         }
+
+        properties.load(inputStream);
+
+        urlHotel = properties.getProperty("db.url");
+        userNameHotel = properties.getProperty("db.username");
+        passWordHotel = properties.getProperty("db.password");
+
+    } catch (IOException e) {
+        System.out.println("Erro ao ler o arquivo de propriedades: " + e.getMessage());
+    }
+            
+
+
+
+
+
+
+
     }
 
 
-        
+}
